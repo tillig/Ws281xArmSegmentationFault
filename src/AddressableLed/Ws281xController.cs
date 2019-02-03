@@ -30,6 +30,7 @@ namespace AddressableLed
 
             // Pin the object in memory. Otherwise GC may move the object and break the connection
             // between the memory location and the native library.
+            // Removing this does not stop the segmentation fault from occurring.
             this._ws2811Handle = GCHandle.Alloc(this._ws2811, GCHandleType.Pinned);
 
             this._ws2811.dmanum = settings.DmaChannel;
