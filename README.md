@@ -9,3 +9,4 @@ I've found that I inconsistently get a segmentation fault somewhere around the P
 The `logs` folder contains stack traces and logs gathered from the Raspberry Pi during troubleshooting.
 
 - `strace1.txt`, `strace2.txt`: Logs gathered via `sudo strace ./ConsoleDemo $> ~/strace.txt`
+- `gdb.txt`: Log from running the program through `gdb`. Error consistently in `WKS::gc_heap::mark_object_simple(unsigned char**) () from /home/pi/consoledemo/libcoreclr.so`
