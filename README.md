@@ -28,6 +28,8 @@ I installed the .NET Core SDK 2.2.103 right on the Raspberry Pi to reproduce it 
 
 An update to [the issue I filed](https://github.com/dotnet/coreclr/issues/22384) mentions the memory does need to be pinned... but you must use a class rather than a struct to do that.
 
+I tried switching `ws2811_t` to a class, but then I get an exception when I try to call `GCHandle.Alloc` to pin the object - `System.ArgumentException: Object contains non-primitive or non-blittable data.` This appears to indicate I need to mark something as `fixed` but you can only mark things `fixed` in a `struct`.
+
 Seems there are lots of segmentation fault issues on ARM.
 
 - https://www.google.com/search?q=segmentation+fault+gc_heap+mark_object_simple+libcoreclr
