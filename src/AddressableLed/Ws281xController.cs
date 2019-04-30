@@ -26,7 +26,7 @@ namespace AddressableLed
         /// <param name="settings">Settings used for initialization.</param>
         public Ws281xController(Settings settings)
         {
-            this._ws2811 = default(ws2811_t);
+            this._ws2811 = new ws2811_t();
 
             // Pin the object in memory. Otherwise GC may move the object and break the connection
             // between the memory location and the native library.
