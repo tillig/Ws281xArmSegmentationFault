@@ -28,8 +28,6 @@ I installed the .NET Core SDK 2.2.103 right on the Raspberry Pi to reproduce it 
 
 An update to [the issue I filed](https://github.com/dotnet/coreclr/issues/22384) mentions the memory does need to be pinned... but you must use a class rather than a struct to do that.
 
-I tried switching `ws2811_t` to a class, but then I get an exception when I try to call `GCHandle.Alloc` to pin the object - `System.ArgumentException: Object contains non-primitive or non-blittable data.` This appears to indicate I need to mark something as `fixed` but you can only mark things `fixed` in a `struct`.
-
 Seems there are lots of segmentation fault issues on ARM.
 
 - https://www.google.com/search?q=segmentation+fault+gc_heap+mark_object_simple+libcoreclr
@@ -37,3 +35,11 @@ Seems there are lots of segmentation fault issues on ARM.
 - https://github.com/dotnet/coreclr/issues/13500
 - https://github.com/dotnet/coreclr/issues/18682
 - https://github.com/dotnet/coreclr/issues/19361
+
+## Resolution
+
+It works! On May 14, 2019 I got it working. Changes I needed to make:
+
+- Switch `ws2811_t` to be a class.
+- Ensure both channel structures (`ws2811_channel_t`) are present in the `ws2811_t` class so it matches the one outlined in the unmanaged library (which has an array of two channels).
+- Pass the `_ws2811Handle.AddrOfPinnedObject()` as an `IntPtr` to the interop methods instead of a `ref` to the `ws2811` object instance. Doing this ensures the native library gets the object memory location and not the location of the .NET object method table.
