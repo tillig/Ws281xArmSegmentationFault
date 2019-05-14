@@ -40,7 +40,7 @@ namespace AddressableLed
             this.InitChannel(ref this._ws2811.channel_1, settings.Channel);
             this.Settings = settings;
 
-            var initResult = NativeMethods.ws2811_init(ref this._ws2811);
+            var initResult = NativeMethods.ws2811_init(this._ws2811Handle.AddrOfPinnedObject());
             if (initResult != ws2811_return_t.WS2811_SUCCESS)
             {
                 var returnMessage = GetMessageForStatusCode(initResult);
@@ -76,7 +76,7 @@ namespace AddressableLed
             var ledColor = this.Settings.Channel.Lights.Select(x => x.RgbValue).ToArray();
             Marshal.Copy(ledColor, 0, this._ws2811.channel_1.leds, ledColor.Length);
 
-            var result = NativeMethods.ws2811_render(ref this._ws2811);
+            var result = NativeMethods.ws2811_render(this._ws2811Handle.AddrOfPinnedObject());
             if (result != ws2811_return_t.WS2811_SUCCESS)
             {
                 var returnMessage = GetMessageForStatusCode(result);
@@ -100,7 +100,7 @@ namespace AddressableLed
             {
                 if (this._isDisposingAllowed)
                 {
-                    NativeMethods.ws2811_fini(ref this._ws2811);
+                    NativeMethods.ws2811_fini(this._ws2811Handle.AddrOfPinnedObject());
                     if (this._ws2811Handle.IsAllocated)
                     {
                         this._ws2811Handle.Free();

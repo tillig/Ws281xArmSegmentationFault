@@ -17,5 +17,6 @@ namespace AddressableLed.Interop
         public uint freq;
         public int dmanum;
         public ws2811_channel_t channel_1;
+        public ws2811_channel_t channel_2;
     }
 }
